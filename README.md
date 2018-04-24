@@ -39,7 +39,7 @@ Application web d'écoute de musique en groupe via l'application spotify des uti
 * Faire les controlleurs:
     * Inscription / Connexion
     * Main:
-        * Choix d'ne salle
+        * Choix d'une salle
     * Salle:
         * Player
         * Liste des utilisateurs
