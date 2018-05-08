@@ -50,4 +50,12 @@ html,body{
 #right{
     position: absolute;
     display: inline-block;
+    height: 90%;
+    width: 30%;
+}
+
+#listUsers{
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
 }
