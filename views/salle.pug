@@ -1,7 +1,7 @@
 doctype html
 html
     head
-        title Salle
+        title {title}
         style
             include style.css
     body
@@ -11,35 +11,7 @@ html
             div(id='chat')
                 div(id='listMessages')
                     p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
-                    p(class='message') message
+                    ul
                 form(method='POST' action='/chatController' id='form')
                     input(type='text' id='input')
                     button(type='submit' id='button') Envoyer
