@@ -1,0 +1,24 @@
+doctype html
+html
+    head
+        title #{title}
+        style
+            include style.css
+    body
+        div(id='salle')
+            center
+                h1(class='h1') La salle #{name}
+            div(id='chat')
+                div(id='listMessages')
+                    ul(id="messages")
+                form(action="")
+                    input#m(autocomplete="off")
+                    button Envoyer
+            div(id='right')
+                p {musique}
+                div(id='listUsers')
+                    p {user}
+
+        script(src='http://code.jquery.com/jquery-1.11.1.js')
+        script(src='/socket.io/socket.io.js')
+        script(src='client.js')
