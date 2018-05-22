@@ -6,9 +6,8 @@ const io = require('socket.io')(http);
 const MusicMod = require("./models/musics");
 const RoomMod = require("./models/rooms");
 const UserMod = require("./models/users");
-
-
-
+const redis = require("redis");
+const client = redis.createClient();
 
 mongooseDB.connect();
 
@@ -22,6 +21,7 @@ io.on('connection', function (socket) {
 
   socket.on('chat-message', function (message) {
     io.emit('chat-message', message);
+    console.log("new message")
   });
 });
 
