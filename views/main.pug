@@ -5,12 +5,11 @@ html(lang='fr')
    style
     include main.css
  body
--  var salons = [{name: "Nightcore #1", places: "0/8", id: "nightcore1"}, {name: "Metal",places: "4/16", id: "metal"}, {name: "Frenchcore",places: "6/24", id: "frenchcore"}, {name: "Metal",places: "3/16", id: "metal"}];
    h1#titre Salons
    hr
    hr
    ul#liste
-    for salon in salons
-        li#salon: a(href="https://www.google.fr/search?&q=" + salon.id)= salon.name + ' ( ' + salon.places + ' )' 
+    for room in rooms
+        li#room: a(href="https://www.google.fr/search?&q=" + room.roomId)= room.roomName 
    hr
    hr
