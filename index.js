@@ -21,6 +21,17 @@ io.on('connection', function (socket) {
 
   socket.on('chat-message', function (message) {
     io.emit('chat-message', message);
+
+    client.on("error", function (err) {
+      console.log("Error " + err);
+    });
+    let time = Math.floor(Date.now() / 1000);
+    client.set(time, message);
+    client.get(time, function (err, reply) {
+      // console.log(reply.toString());
+      console.log(message);
+    });
+
     console.log("new message")
   });
 });
