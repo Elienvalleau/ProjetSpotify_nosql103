@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 
 const client_id = '2fa324d1913044c9a359f9ec11854199'; // Your client id
 const client_secret = require('./controllers/secret');
-const redirect_uri = 'http://localhost:8888/'; // Your redirect uri
+const redirect_uri = 'http://localhost:8888/salle'; // Your redirect uri
 
 mongooseDB.connect();
 //app.listen(8888);
@@ -35,6 +35,7 @@ let stateKey = 'spotify_auth_state';
 
 app.use(express.static(__dirname + '/views'))
     .use(cookieParser());
+app.use("/salle", express.static(__dirname + "/views/room"));
 
 app.get('/', (req, res) => {
     const tplIndexPath = './views/index.pug';
