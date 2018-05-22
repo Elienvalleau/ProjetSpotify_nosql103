@@ -1,46 +1,36 @@
-var Room = require('../models/rooms');
+const express = require('express');
+const Rooms = require("../models/rooms");
+const router = express.Router();
+const pug = require('pug');
+const db = require('../db');
 
-// Display list of all Rooms.
-exports.room_list = function(req, res) {
-    Room.find(function(err, rooms){
-        if (err){
-            res.send(err); 
-        }
-        res.json(rooms); 
-    })
-};
+db.connect();
 
-// Display detail page for a specific Room.
-exports.room_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room detail: ' + req.params.id);
-};
+var metal = new Rooms({roomId: "fefefesda", roomName: "Metal MDR"})
 
-// Display Room create form on GET.
-exports.room_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room create GET');
-};
+metal.save()
 
-// Handle Room create on POST.
-exports.room_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room create POST');
-};
+console.log("===============")
+Rooms.find(function (err, rooms) {
+    if (err) return console.error(err);
+    console.log(rooms);
+  })
+console.log("===============")
 
-// Display Room delete form on GET.
-exports.room_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room delete GET');
-};
+router.get('/', (req, res) => {
+  const tplIndexPath = './views/main.pug';
+  const renderIndex = pug.compileFile(tplIndexPath);
+  const html = renderIndex({
+    title: 'Liste des Salles'
+  });
+  res.writeHead(200, { 'Content-Type': 'text/html' } );
+  res.write(html);
+  Rooms.find(function (err, rooms) {
+    if (err) return console.error(err);
+    console.log(rooms);
+    res.send(rooms);
+  })
+  res.end();
+});
 
-// Handle Room delete on POST.
-exports.room_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room delete POST');
-};
-
-// Display Room update form on GET.
-exports.room_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room update GET');
-};
-
-// Handle Room update on POST.
-exports.room_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Room update POST');
-};
+module.exports = router;
