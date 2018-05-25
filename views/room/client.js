@@ -21,6 +21,6 @@ socket.on('chat-message', function (message) {
   messages.scrollTop = messages.scrollHeight;
 });
 
-playBut.onclick = function() {
-  
+playPause.onclick = function() {
+  socket.emit('playPause')
 }
