@@ -1,5 +1,7 @@
 const socket = io();
 const playBut = document.getElementById('playPause');
+const messages = document.getElementById('listMessages');
+
 
 $('#chat form').submit(function (e) {
   e.preventDefault();
@@ -16,6 +18,7 @@ $('#chat form').submit(function (e) {
 
 socket.on('chat-message', function (message) {
   $('#messages').append($('<li class="message">').text(message.text));
+  messages.scrollTop = messages.scrollHeight;
 });
 
 playBut.onclick = function() {

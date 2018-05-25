@@ -7,6 +7,9 @@ const MusicMod = require("./models/musics");
 const RoomMod = require("./models/rooms");
 const UserMod = require("./models/users");
 
+
+
+
 mongooseDB.connect();
 
 app.use("/salle", express.static(__dirname + "/views/room"));
@@ -22,8 +25,12 @@ io.on('connection', function (socket) {
   });
 });
 
+app.use('/', require('./controllers/connexionController'));
 app.use('/salle', require('./controllers/salleController'));
 
+
 http.listen(8888, function () {
-  console.log('Server is listening on *:8888');
+    console.log('Server is listening on *:8888');
 });
+
+
