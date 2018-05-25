@@ -8,7 +8,7 @@ const RoomMod = require("./models/rooms");
 const UserMod = require("./models/users");
 const request = require('request');
 
-
+let isMusicPlay = false
 
 mongooseDB.connect();
 
@@ -25,8 +25,16 @@ io.on('connection', function (socket) {
   });
 
   socket.on('playPause', function() {
-    let url = 'https://api.spotify.com/v1/me/player/pause'
-    let headersData = {Authorization: 'Bearer BQBZhL_hIokfe7TQLYPtKYa5rixZqvqHX9_YypgK5BjVvwrO0UBQRNQctmTq-VxmIRM4r3mN7ms93uFEXJCrXijI0LdBifrFyab9FHN4OyR1wATz0g5na2uu0Wa7QvrI3Qhh9hfGcZTTmvt-jF7lGl7C'}
+    let url = 'https://api.spotify.com/v1/me/player/'
+    if (isMusicPlay) {
+      isMusicPlay = false
+      url += 'pause'
+    } else if (!isMusicPlay) {
+      isMusicPlay = true
+      url += 'play'
+    }
+    
+    let headersData = {Authorization: 'Bearer BQAEnklYtGyRSpGhRghlbbzV1l76TD2CwdYtyUUdTc7MVZcaGJlm5FQZ5u9wqqlOGvbolELdqZ8ncsVkHvmZAm0S-W8uRWnpBvff2xrWoyNiIvgfwvmJMMxlvZvBNfjk19k6VwRq4GTiAmYD2xKsGLzZ'}
     let bodyData = { }
     let req = {
       method: 'PUT',
@@ -34,8 +42,9 @@ io.on('connection', function (socket) {
       url : url,
     }
     request(req, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log('Patate')
+      if (!error && response.statusCode == 204) {
+        console.log('playPause succes')
+        io.emit('chat-message', {text: 'isMusicPlay ' + isMusicPlay + ' by ' + socket.id})
       } else {
         console.log(response.statusCode)
       }
