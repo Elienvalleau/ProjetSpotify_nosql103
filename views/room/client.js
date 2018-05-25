@@ -1,4 +1,5 @@
 const socket = io();
+const playBut = document.getElementById('playPause');
 
 $('#chat form').submit(function (e) {
   e.preventDefault();
@@ -16,3 +17,7 @@ $('#chat form').submit(function (e) {
 socket.on('chat-message', function (message) {
   $('#messages').append($('<li class="message">').text(message.text));
 });
+
+playBut.onclick = function() {
+  
+}
