@@ -9,7 +9,7 @@ const UserMod = require("./models/users");
 const request = require('request');
 
 let isMusicPlay = false
-let headersData = {Authorization: 'Bearer BQCcdoWJe0LMMQBusKAxmiizbcgxA9e_dB7nQH1yJqSMhzRZqngirkNTt7s0Vau_MF3_uUme_vgv5GtnR3hL_ZqMttTe4oeyGvsxutkEy3K5cNk2g27g900d9sYsZD9LOmlPl5tLnJpKFo2WPe91M-nW'}
+let headersData = {Authorization: 'Bearer BQDzZuN18aAM8eU4Gp709zAZZkC1aAhyQiSNCBp5PYPxqfgy1fcxFtfvAD7gM-8jSl3J1X65rE3pP9MqEHblylh69qFiFhwtl8b2qufI4GJaZt7X0iVaGqiwoepsZgwFraze5zYacIMIAdnJ6ikxLFG8'}
 
 mongooseDB.connect();
 
@@ -32,6 +32,7 @@ io.on('connection', function (socket) {
 
   //Gestion de la fonction Play/Pause
   socket.on('playPause', function() {
+    getMusicPlaying()
     let url = 'https://api.spotify.com/v1/me/player/'
     if (isMusicPlay) {
       isMusicPlay = false
@@ -101,4 +102,21 @@ http.listen(8888, function () {
     console.log('Server is listening on *:8888');
 });
 
-
+//Return la musique actuelement joué
+function getMusicPlaying(){
+  let url = 'https://api.spotify.com/v1/me/player/currently-playing'
+  let req = {
+    method: 'GET',
+    headers: headersData,
+    url : url,
+  }
+  request(req, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log('get currently-playing music succes')
+      return(JSON.parse(body).item.name)
+    } else {
+      console.log('ERROR REQUEST: get currently-playing ' + response.statusCode)
+    }
+  });
+  return (null)
+}
