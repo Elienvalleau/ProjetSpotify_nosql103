@@ -12,6 +12,8 @@ html
             div(id='chat')
                 div(id='listMessages')
                     ul(id="messages")
+                        each oldMsg in oldMsgs
+                            li(class="message") #{oldMsg}
                 form(action="")
                     input#m(autocomplete="off")
                     button Envoyer

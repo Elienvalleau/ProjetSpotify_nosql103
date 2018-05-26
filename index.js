@@ -7,6 +7,9 @@ const MusicMod = require("./models/musics");
 const RoomMod = require("./models/rooms");
 const UserMod = require("./models/users");
 const request = require('request');
+const redis = require("redis");
+// const client = redis.createClient({detect_buffers: true});
+const client = redis.createClient();
 
 let isMusicPlay = false
 let headersData = {Authorization: 'Bearer BQCBAja48xnechNA8swTUEB8uW_HJBDYoieKwh1A_DCgjZzC0JHDsB-DXYihD1p1wgmNrJenlKRgnUiSBzzpWwOpyqJzZi2_8NtZXiP3mT2IsDBVv8dUO9ttcrtMOn2PPWmeCXPWoeTIiZkPABtP-BDz'}
@@ -28,6 +31,15 @@ io.on('connection', function (socket) {
   socket.on('chat-message', function (message) {
     console.log(socket.id + ' : ' + message)
     io.emit('chat-message', message);
+
+    client.on("error", function (err) {
+      console.log("Error " + err);
+    });
+
+    let time = Math.floor(Date.now() / 1000);
+    const aMessage = JSON.stringify(message);
+    const bMessage = aMessage.slice(9, -2);
+    client.set(time, bMessage, 'EX', 3600);
   });
 
   //Gestion de la fonction Play/Pause
