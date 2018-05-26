@@ -1,6 +1,7 @@
 const socket = io();
 const messages = document.getElementById('listMessages');
 
+var musiquePlaying = 'Patate'
 
 $('#chat form').submit(function (e) {
   e.preventDefault();
@@ -19,3 +20,19 @@ socket.on('chat-message', function (message) {
   $('#messages').append($('<li class="message">').text(message.text));
   messages.scrollTop = messages.scrollHeight;
 });
+
+socket.on('sendMusiqueName', function (musiqueName) {
+  $("#musiqueName").text('Musique : ' + musiqueName)
+})
+
+previous.onclick = function() {
+  socket.emit('previous')
+};
+
+playPause.onclick = function() {
+  socket.emit('playPause')
+};
+
+next.onclick = function() {
+  socket.emit('next')
+};
