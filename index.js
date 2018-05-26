@@ -1,5 +1,6 @@
 const mongooseDB = require("./db");
 const express = require('express');
+const path = require("path");
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -9,9 +10,8 @@ const UserMod = require("./models/users");
 
 mongooseDB.connect();
 
-var metal = new RoomMod({roomId: "FAKpkfksakfzakdms", roomName: "Metal"});
-
-app.use("/", express.static(__dirname + "/views/main"));
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 io.on('connection', function (socket) {
   console.log('a user connected');
