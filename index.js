@@ -13,6 +13,7 @@ const client = redis.createClient();
 
 let isMusicPlay = false
 let headersData = {Authorization: 'Bearer BQCBAja48xnechNA8swTUEB8uW_HJBDYoieKwh1A_DCgjZzC0JHDsB-DXYihD1p1wgmNrJenlKRgnUiSBzzpWwOpyqJzZi2_8NtZXiP3mT2IsDBVv8dUO9ttcrtMOn2PPWmeCXPWoeTIiZkPABtP-BDz'}
+let idCo = [];
 
 mongooseDB.connect();
 
@@ -21,10 +22,14 @@ app.use("/salle", express.static(__dirname + "/views/room"));
 //Connexion d'un client
 io.on('connection', function (socket) {
   console.log('User ' + socket.id + ' connected');
-  
+  idCo.push(socket.id);
+  io.emit('arrayCo', idCo);
+
   //Gestion déconnection
   socket.on('disconnect', function () {
     console.log('User ' + socket.id + ' disconected');
+    idCo.splice(socket.id, 1);
+    io.emit('arrayCo', idCo);
   });
 
   //Emission d'un message vers tout les clients
@@ -52,7 +57,7 @@ io.on('connection', function (socket) {
       isMusicPlay = true
       url += 'play'
     }
-    
+
     let req = {
       method: 'PUT',
       headers: headersData,
@@ -134,6 +139,6 @@ app.use('/salle', require('./controllers/salleController'));
 
 
 http.listen(8888, function () {
-    console.log('Server is listening on *:8888');
+  console.log('Server is listening on *:8888');
 });
 

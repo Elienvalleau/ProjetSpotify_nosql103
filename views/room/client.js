@@ -21,9 +21,13 @@ socket.on('chat-message', function (message) {
   messages.scrollTop = messages.scrollHeight;
 });
 
+socket.on('arrayCo', function (idCo) {
+  $("#listUsers").text('Utilisateurs : ' + idCo)
+});
+
 socket.on('sendMusiqueName', function (musiqueName) {
   $("#musiqueName").text('Musique : ' + musiqueName)
-})
+});
 
 previous.onclick = function() {
   socket.emit('previous')
