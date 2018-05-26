@@ -1,5 +1,4 @@
 const socket = io();
-const playBut = document.getElementById('playPause');
 const messages = document.getElementById('listMessages');
 
 
@@ -21,6 +20,14 @@ socket.on('chat-message', function (message) {
   messages.scrollTop = messages.scrollHeight;
 });
 
+previous.onclick = function() {
+  socket.emit('previous')
+};
+
 playPause.onclick = function() {
   socket.emit('playPause')
-}
+};
+
+next.onclick = function() {
+  socket.emit('next')
+};
