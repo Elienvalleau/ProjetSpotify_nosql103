@@ -9,6 +9,7 @@ html(lang='fr')
    hr
    ul(id="rooms")
        each room in rooms
-           li= room.roomName
+            a(href="http://localhost:8888/"+room.roomName)= room.roomName
+            br
    hr
    
