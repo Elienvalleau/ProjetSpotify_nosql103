@@ -26,8 +26,7 @@ io.on('connection', function (socket) {
 
   socket.on('chat-message', function (message) {
     io.emit('chat-message', message);
-  });
-});
+
 
     client.on("error", function (err) {
       console.log("Error " + err);
@@ -37,7 +36,8 @@ io.on('connection', function (socket) {
     const aMessage = JSON.stringify(message);
     const bMessage = aMessage.slice(9, -2);
     client.set(time, bMessage, 'EX', 3600);
-
+  });
+});
 
 app.use('/', require('./controllers/roomController'));
 app.use('/', require('./controllers/connexionController'));
