@@ -1,5 +1,6 @@
 const mongooseDB = require("./db");
 const express = require('express');
+const path = require("path");
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -17,7 +18,9 @@ let idCo = [];
 
 mongooseDB.connect();
 
-app.use("/salle", express.static(__dirname + "/views/room"));
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+app.use("/:salle", express.static(__dirname + "/views/room"));
 
 //Connexion d'un client
 io.on('connection', function (socket) {
@@ -36,6 +39,7 @@ io.on('connection', function (socket) {
   socket.on('chat-message', function (message) {
     console.log(socket.id + ' : ' + message)
     io.emit('chat-message', message);
+
 
     client.on("error", function (err) {
       console.log("Error " + err);
@@ -134,9 +138,9 @@ io.on('connection', function (socket) {
 
 });
 
+app.use('/main', require('./controllers/roomController'));
 app.use('/', require('./controllers/connexionController'));
-app.use('/salle', require('./controllers/salleController'));
-
+app.use('/:salle', require('./controllers/salleController'));
 
 http.listen(8888, function () {
   console.log('Server is listening on *:8888');

@@ -1,0 +1,15 @@
+doctype html  
+html(lang='fr')  
+ head
+   title Liste des Salons
+   style
+    include main.css
+ body
+   h1#titre Salons
+   hr
+   ul(id="rooms")
+       each room in rooms
+            a(href="http://localhost:8888/"+room.roomName)= room.roomName
+            br
+   hr
+   

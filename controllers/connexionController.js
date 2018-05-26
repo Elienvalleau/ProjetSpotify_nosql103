@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 
 const client_id = '2fa324d1913044c9a359f9ec11854199';
 const client_secret = require('./secret');
-const redirect_uri = 'http://localhost:8888/';
+const redirect_uri = 'http://localhost:8888/main';
 
 const generateRandomString = function(length) {
     let text = '';
