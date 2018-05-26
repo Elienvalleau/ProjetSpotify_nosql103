@@ -22,7 +22,7 @@ socket.on('chat-message', function (message) {
 });
 
 socket.on('arrayCo', function (idCo) {
-  $("#listUsers").text('Utilisateurs : ' + idCo)
+  $("#listUsers").text('Utilisateurs :' + idCo.length +' \n ' + idCo)
 });
 
 socket.on('sendMusiqueName', function (musiqueName) {
