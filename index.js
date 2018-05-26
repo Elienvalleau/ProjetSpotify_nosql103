@@ -9,7 +9,7 @@ const UserMod = require("./models/users");
 const request = require('request');
 
 let isMusicPlay = false
-let headersData = {Authorization: 'Bearer BQDzZuN18aAM8eU4Gp709zAZZkC1aAhyQiSNCBp5PYPxqfgy1fcxFtfvAD7gM-8jSl3J1X65rE3pP9MqEHblylh69qFiFhwtl8b2qufI4GJaZt7X0iVaGqiwoepsZgwFraze5zYacIMIAdnJ6ikxLFG8'}
+let headersData = {Authorization: 'Bearer BQCBAja48xnechNA8swTUEB8uW_HJBDYoieKwh1A_DCgjZzC0JHDsB-DXYihD1p1wgmNrJenlKRgnUiSBzzpWwOpyqJzZi2_8NtZXiP3mT2IsDBVv8dUO9ttcrtMOn2PPWmeCXPWoeTIiZkPABtP-BDz'}
 
 mongooseDB.connect();
 
@@ -31,8 +31,7 @@ io.on('connection', function (socket) {
   });
 
   //Gestion de la fonction Play/Pause
-  socket.on('playPause', function() {
-    getMusicPlaying()
+  socket.on('playPause', async function() {
     let url = 'https://api.spotify.com/v1/me/player/'
     if (isMusicPlay) {
       isMusicPlay = false
@@ -51,6 +50,7 @@ io.on('connection', function (socket) {
       if (!error && response.statusCode == 204) {
         console.log('playPause succes')
         io.emit('chat-message', {text: 'isMusicPlay ' + isMusicPlay + ' by ' + socket.id})
+        getMusicPlaying()
       } else {
         console.log('ERROR REQUEST: playPause ' + response.statusCode)
       }
@@ -69,6 +69,7 @@ io.on('connection', function (socket) {
       if (!error && response.statusCode == 204) {
         console.log('previous succes')
         io.emit('chat-message', {text: 'Previous music by ' + socket.id})
+        setTimeout(getMusicPlaying, 500);
       } else {
         console.log('ERROR REQUEST: previous ' + response.statusCode)
       }
@@ -76,7 +77,7 @@ io.on('connection', function (socket) {
   })
 
   //Gestion de la fonction next
-  socket.on('next' ,function() {
+  socket.on('next' , function() {
     let url = 'https://api.spotify.com/v1/me/player/next'
     let req = {
       method: 'POST',
@@ -87,11 +88,33 @@ io.on('connection', function (socket) {
       if (!error && response.statusCode == 204) {
         console.log('next succes')
         io.emit('chat-message', {text: 'Next music by ' + socket.id})
+        setTimeout(getMusicPlaying, 500);
       } else {
         console.log('ERROR REQUEST: next ' + response.statusCode)
       }
     });
   })
+
+
+  //Cherche la musique actuelement joué et l'envoi
+  function getMusicPlaying(){
+    let url = 'https://api.spotify.com/v1/me/player/currently-playing'
+    let req = {
+      method: 'GET',
+      headers: headersData,
+      url : url,
+    }
+    request(req, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log('get currently-playing music succes ' + JSON.parse(body).item.name)
+        let result = JSON.parse(body).item.name
+        io.emit('sendMusiqueName', result)
+      } else {
+        console.log('ERROR REQUEST: get currently-playing ' + response.statusCode)
+      }
+    });
+  }
+
 });
 
 app.use('/', require('./controllers/connexionController'));
@@ -102,21 +125,3 @@ http.listen(8888, function () {
     console.log('Server is listening on *:8888');
 });
 
-//Return la musique actuelement joué
-function getMusicPlaying(){
-  let url = 'https://api.spotify.com/v1/me/player/currently-playing'
-  let req = {
-    method: 'GET',
-    headers: headersData,
-    url : url,
-  }
-  request(req, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log('get currently-playing music succes')
-      return(JSON.parse(body).item.name)
-    } else {
-      console.log('ERROR REQUEST: get currently-playing ' + response.statusCode)
-    }
-  });
-  return (null)
-}
