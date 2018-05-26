@@ -13,7 +13,7 @@ metal.save()
 console.log("===============")
 Rooms.find(function (err, rooms) {
     if (err) return console.error(err);
-    console.log(rooms);
+    console.log(rooms[0].roomName);
   })
 console.log("===============")
 
