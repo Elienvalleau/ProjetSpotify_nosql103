@@ -15,7 +15,7 @@ mongooseDB.connect();
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
-app.use("/salle", express.static(__dirname + "/views/room"));
+app.use("/:salle", express.static(__dirname + "/views/room"));
 
 io.on('connection', function (socket) {
   console.log('a user connected');
@@ -39,9 +39,9 @@ io.on('connection', function (socket) {
   });
 });
 
-app.use('/', require('./controllers/roomController'));
+app.use('/main', require('./controllers/roomController'));
 app.use('/', require('./controllers/connexionController'));
-app.use('/salle', require('./controllers/salleController'));
+app.use('/:salle', require('./controllers/salleController'));
 
 http.listen(8888, function () {
     console.log('Server is listening on *:8888');
