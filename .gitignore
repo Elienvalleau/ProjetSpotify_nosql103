@@ -1,3 +1,6 @@
+#key
+key.js
+
 # Logs
 logs
 *.log
@@ -44,6 +47,9 @@ typings/
 
 # Optional npm cache directory
 .npm
+
+# secret
+controllers/secret.js
 
 # Optional eslint cache
 .eslintcache
