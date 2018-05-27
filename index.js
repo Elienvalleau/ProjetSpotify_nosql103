@@ -91,6 +91,7 @@ io.on('connection', function (socket) {
         console.log('previous succes')
         io.emit('chat-message', {text: 'Previous music by ' + socket.id})
         setTimeout(getMusicPlaying, 500);
+        isMusicPlay = true
       } else {
         console.log('ERROR REQUEST: previous ' + response.statusCode)
       }
@@ -110,12 +111,19 @@ io.on('connection', function (socket) {
         console.log('next succes')
         io.emit('chat-message', {text: 'Next music by ' + socket.id})
         setTimeout(getMusicPlaying, 500);
+        isMusicPlay = true
       } else {
         console.log('ERROR REQUEST: next ' + response.statusCode)
       }
     });
   })
 
+  //Gestion de la fonction next
+  socket.on('searchMusic' , async function(search) {
+    getSearchMusic(search.text, 'track').then(function(res){    
+      playMusic(res[0], res[1])
+    })
+  })
 
   //Cherche la musique actuelement joué et l'envoi
   function getMusicPlaying(){
@@ -136,6 +144,50 @@ io.on('connection', function (socket) {
     });
   }
 
+  //Fait une recherche et renvoie l'album et la position 
+  function getSearchMusic(q, type){
+    return new Promise((resolve, reject) => {
+      let url = 'https://api.spotify.com/v1/search?q=' + q + '&type=' + type + '&limit=1'
+      let req = {
+        method: 'GET',
+        headers: headersData,
+        url : url,
+      }
+      request(req, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          console.log('get search music succes ' + JSON.parse(body).tracks.items[0].album.uri + ' offset ' + JSON.parse(body).tracks.items[0].track_number -1)
+          let result = [JSON.parse(body).tracks.items[0].album.uri, JSON.parse(body).tracks.items[0].track_number -1]
+          resolve(result)
+        } else {
+          console.log('ERROR REQUEST: get search music ' + response.statusCode)
+        }
+      });
+    })
+  }
+
+  //Lance une musique en fonction de l'uri de l'album et de sa position
+  function playMusic(uriAlbum,offset){
+    let url = 'https://api.spotify.com/v1/me/player/play' 
+    let req = {
+      method: 'PUT',
+      headers: headersData,
+      body: JSON.stringify({
+        context_uri: uriAlbum,
+        offset: {position: offset}
+      }),
+      url : url,
+    }
+    request(req, function (error, response, body) {
+      if (!error && response.statusCode == 204) {
+        console.log('Music Switch by ' + socket.id)
+        io.emit('chat-message', {text: 'Music Switch by ' + socket.id})
+        setTimeout(getMusicPlaying, 500);
+        isMusicPlay = true
+      } else{
+        console.log('ERROR REQUEST: set playMusic ' + response.statusCode)
+      }
+    });
+  }
 });
 
 app.use('/main', require('./controllers/roomController'));
