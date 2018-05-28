@@ -6,7 +6,8 @@ const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 
 const client_id = '2fa324d1913044c9a359f9ec11854199';
-const client_secret = require('./secret');
+const secret = require('./secret');
+const client_secret = secret.client_secret
 const redirect_uri = 'http://localhost:8888/main';
 
 const generateRandomString = function(length) {
@@ -60,11 +61,14 @@ router.get('/callback', function(req, res) {
     // after checking the state parameter
 
     let code = req.query.code || null;
-    console.log('hello');
+    console.log('code ' + code);
     let state = req.query.state || null;
+    console.log('state ' + state);
     let storedState = req.cookies ? req.cookies[stateKey] : null;
+    console.log('storedstate ' + storedState);
 
     if (state === null || state !== storedState) {
+        console.log('state mismatch')
         res.redirect('/#' +
             querystring.stringify({
                 error: 'state_mismatch'
@@ -90,7 +94,6 @@ router.get('/callback', function(req, res) {
                 let access_token = body.access_token,
                     refresh_token = body.refresh_token;
 
-
                 let options = {
                     url: 'https://api.spotify.com/v1/me',
                     headers: { 'Authorization': 'Bearer ' + access_token },
@@ -99,7 +102,7 @@ router.get('/callback', function(req, res) {
 
                 // use the access token to access the Spotify Web API
                 request.get(options, function(error, response, body) {
-                    console.log(body.access_token);
+                    console.log('body.access_token ' + body.access_token);
                 });
 
                 // we can also pass the token to the browser to make requests from there
