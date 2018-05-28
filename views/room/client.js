@@ -40,3 +40,13 @@ playPause.onclick = function() {
 next.onclick = function() {
   socket.emit('next')
 };
+
+$('#right form').submit(function (e) {
+  e.preventDefault();
+  const search = {text : $('#searchMusic').val()};
+  $('#searchMusic').val('');
+  if (search.text.trim().length !== 0) {
+    socket.emit('searchMusic', search);
+  }
+  $('#right input').focus();
+});
