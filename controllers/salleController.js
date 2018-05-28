@@ -4,7 +4,6 @@ const pug = require('pug');
 const redis = require("redis");
 const client = redis.createClient({detect_buffers: true});
 
-
 router.get('/', (req, res) => {
   const tplIndexPath = './views/room/salle.pug';
   const renderIndex = pug.compileFile(tplIndexPath);
@@ -24,7 +23,6 @@ router.get('/', (req, res) => {
   setTimeout(function() {
     const html = renderIndex({
       title: 'Salle',
-      name: 'exemple nom de salle',
       oldMsgs: oldmsgs
     });
 

@@ -1,0 +1,13 @@
+doctype html
+html
+    head
+        title #{title}
+    style
+        include main.css
+    body
+        form(method='POST' action='/main/')
+            div(id="formAdd").form-group
+                label(for='ajoutSalle') Nom de la salle :
+                br
+                input#ajoutSalle.form-control(type='textarea', placeholder='nom de la salle' name='roomName')
+            button.btn.btn-primary(type='submit') Envoyer
