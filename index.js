@@ -13,7 +13,7 @@ const redis = require("redis");
 const client = redis.createClient();
 
 let isMusicPlay = false
-let headersData = {Authorization: 'Bearer BQCBAja48xnechNA8swTUEB8uW_HJBDYoieKwh1A_DCgjZzC0JHDsB-DXYihD1p1wgmNrJenlKRgnUiSBzzpWwOpyqJzZi2_8NtZXiP3mT2IsDBVv8dUO9ttcrtMOn2PPWmeCXPWoeTIiZkPABtP-BDz'}
+let headersData = {Authorization: 'Bearer '}
 let idCo = [];
 
 mongooseDB.connect();

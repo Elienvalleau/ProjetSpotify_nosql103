@@ -27,15 +27,14 @@ router.use(express.static(__dirname + '../views'))
 
 router.get('/', (req, res) => {
     const tplIndexPath = './views/index.pug';
-const renderIndex = pug.compileFile(tplIndexPath);
-const html = renderIndex({
-    title: 'Connection',
-    name: 'connect yourself'
-});
-
-res.writeHead(200, { 'Content-Type': 'text/html' } );
-res.write(html);
-res.end();
+    const renderIndex = pug.compileFile(tplIndexPath);
+    const html = renderIndex({
+        title: 'Connection',
+        name: 'connect yourself'
+    });
+    res.writeHead(200, { 'Content-Type': 'text/html' } );
+    res.write(html);
+    res.end();
 });
 
 router.get('/login', function(req, res) {
@@ -44,7 +43,7 @@ router.get('/login', function(req, res) {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    let scope = 'user-read-private user-read-email';
+    let scope = 'user-read-private user-read-email user-modify-playback-state';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
