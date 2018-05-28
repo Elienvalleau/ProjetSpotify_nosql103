@@ -1,7 +1,10 @@
 const socket = io();
 const messages = document.getElementById('listMessages');
+const url = document.location.href;
 
-var musiquePlaying = 'Patate'
+var musiquePlaying = 'Patate';
+
+$('.h1').append($('<h1>').text(url.substr(22).slice(0, -1).replace(/%20/i, ' ')));
 
 $('#chat form').submit(function (e) {
   e.preventDefault();

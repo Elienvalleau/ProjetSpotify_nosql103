@@ -11,9 +11,15 @@ const request = require('request');
 const redis = require("redis");
 // const client = redis.createClient({detect_buffers: true});
 const client = redis.createClient();
+const bodyParser = require('body-parser');
 
-let isMusicPlay = false
-let headersData = {Authorization: 'Bearer '}
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+let isMusicPlay = false;
+let headersData = {Authorization: 'Bearer '};
 let idCo = [];
 
 mongooseDB.connect();
