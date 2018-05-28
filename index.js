@@ -9,11 +9,12 @@ const RoomMod = require("./models/rooms");
 const UserMod = require("./models/users");
 const request = require('request');
 const redis = require("redis");
+const secret = require('./controllers/secret');
 // const client = redis.createClient({detect_buffers: true});
 const client = redis.createClient();
+const headersData = secret.headersData
 
 let isMusicPlay = false
-let headersData = {Authorization: 'Bearer '}
 let idCo = [];
 
 mongooseDB.connect();
@@ -70,7 +71,7 @@ io.on('connection', function (socket) {
     request(req, function (error, response, body) {
       if (!error && response.statusCode == 204) {
         console.log('playPause succes')
-        io.emit('chat-message', {text: 'isMusicPlay ' + isMusicPlay + ' by ' + socket.id})
+        io.emit('chat-message', {text: 'Play/Pause by ' + socket.id})
         getMusicPlaying()
       } else {
         console.log('ERROR REQUEST: playPause ' + response.statusCode)

@@ -1,3 +1,4 @@
 const client_secret = '243d63c223ac4d0191ffeaa19d09d08e';
+const headersData = {Authorization: 'Bearer BQAggmkFs2OVEbdyMHv8fOotslVeVdBMCUDSZ_Hpk114NJPMFaSR8pyNx746gMRa6CBbmoLyMyYULSBS_guRWvcKz_SL0bo7Ze2XbIL8D4Igm89iVGLV2Z84cGRtLEef9Vhb00_VtWZ_trgunOUn9Bgv'}
 
-module.exports = client_secret;
+module.exports = {client_secret, headersData};

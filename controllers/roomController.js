@@ -15,6 +15,5 @@ router.get('/', (req, res) => {
   })
 });
 
-//router.get('/:nomsalle', (req))
 
 module.exports = router;
